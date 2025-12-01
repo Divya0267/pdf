@@ -1,0 +1,27 @@
+Aim: a) Plot the Time series data using R visualizations.
+Code:
+data(AirPassengers)
+ts_data <- AirPassengers
+plot(ts_data,
+main = "AirPassengers Time Series",
+ylab = "Number of Passengers",
+xlab ="Year",
+col ="blue",
+lwd=2)
+lines(lowess(time(ts_data), ts_data), col="red", lwd=2)
+Output:
+(IMAGE)
+
+B) library(forecast)
+data(AirPassengers)
+ts data <- AirPassengers
+# Exponential Smoothing
+fit ets <- ets(ts_data)
+forecast_ets <- forecast(fit_ets, h=12)
+plot(forecast_ets, main = "Exponential Smoothing Forecast")
+# ARIMA Model
+fit arima <- auto.arima(ts_data)
+forecast_arima <- forecast(fit_arima, h = 12)
+plot(forecast_arima, main = "ARIMA Forecast")
+Output:
+(IMAGE)
