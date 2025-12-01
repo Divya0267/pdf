@@ -1,0 +1,52 @@
+Week 11:
+Clustering Model:
+a) Clustering algorithms for unsupervised classification.
+b) Plot the cluster data using R visualizations.
+a)Clustering algorithms for unsupervised classification.
+library(caret)
+library(ggplot2)
+library(dplyr)
+data <- iris
+ggplot(data, aes(Sepal.Length, Sepal.Width, color = Species)) +
+geom_point() +
+ggtitle("Original Iris Data (Sepal Length vs Sepal Width)") +
+theme_minimal()
+data <- data[, -5]
+scal <-scale(data)
+maximum <- 10
+wss <- sapply(1:maximum, function(k) {
+kmeans(scal, k, nstart = 50, iter.max = 15)$tot.withinss
+})
+plot(1:maximum, wss, type = "b", xlab = "Number of Clusters (k)", ylab = "Within-cluster Sum of Squares(WSS)")
+abline(v = 3, col = "red", lty = 2) # The elbow at k = 3 is usually optimal
+km <- kmeans(scal, centers = 3, iter.max = 50)
+print(km)
+data$cluster <- as.factor(km$cluster)
+ggplot(data, aes(Sepal.Length, Sepal.Width, color = cluster)) +
+geom_point() +
+ggtitle("K-Means Clustering (k = 3)") +
+output:
+K-means clustering with 3 clusters of sizes 50, 53, 47
+Cluster means:
+Sepal.Length Sepal.Width Petal.Length Petal.Width
+1 -1.01119138 0.85041372 -1.3006301 -1.2507035
+2 -0.05005221 -0.88042696 0.3465767 0.2805873
+3 1.13217737 0.08812645 0.9928284 1.0141287
+Clustering vector:
+[1] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+[38] 1 1 1 1 1 1 1 1 1 1 1 1 1 3 3 3 2 2 2 3 2 2 2 2 2 2 2 2 3 2 2 2 2 3 2 2 2
+[75] 2 3 3 3 2 2 2 2 2 2 2 3 3 2 2 2 2 2 2 2 2 2 2 2 2 2 3 2 3 3 3 3 2 3 3 3 3
+[112] 3 3 2 2 3 3 3 3 2 3 2 3 2 3 3 2 3 3 3 3 3 3 2 2 3 3 3 2 3 3 3 2 3 3 3 2 3
+[149] 3 2
+Within cluster sum of squares by cluster:
+[1] 47.35062 44.08754 47.45019
+(between_SS / total_SS = 76.7 %)
+Available components:
+[1] "cluster" "centers" "totss" "withinss" "tot.withinss"
+[6] "betweenss" "size" "iter" "ifault"
+Cluster vs Species Table:
+setosa versicolor virginica
+1 50 0 0
+2 0 39 14
+3 0 11 36
+(IMAGE)
