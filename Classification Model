@@ -1,0 +1,86 @@
+Week 10:
+Classification Model:
+a) Install relevant package for classification.
+b) Implement and evaluate the performance of various classifiers with
+different datasets.
+PROGRAMS:
+a) install.packages("caret") # For building and evaluating classification models
+install.packages("e1071") # For SVM and Naive Bayes
+install.packages("randomForest") # For Random Forest classifier
+install.packages("nnet") # For Neural Network classifier
+install.packages("rpart") # For Decision Tree classifier
+install.packages("ggplot2") # For data visualization
+library(caret)
+library(e1071)
+library(randomForest)
+library(nnet)
+library(rpart)
+library(ggplot2)
+data(iris)
+set.seed(123)
+trainIndex <- createDataPartition(iris$Species, p = 0.8, list = FALSE)
+trainData <- iris[trainIndex, ]
+testData <- iris[-trainIndex, ]
+model <- randomForest(Species ~ ., data = trainData, ntree = 100)
+predictions <- predict(model, testData)
+confusionMatrix(predictions, testData$Species)
+OUTPUT:
+Confusion Matrix and Statistics
+Reference
+Prediction setosa versicolor virginica
+setosa 10 0 0
+versicolor 0 10 1
+virginica 0 0 9
+Overall Statistics
+Accuracy : 0.9667
+95% CI : (0.8278, 0.9992)
+No Information Rate : 0.3333
+P-Value [Acc > NIR] : 2.963e-13
+Kappa : 0.95
+Mcnemar's Test P-Value : NA
+Statistics by Class:
+Class: setosa Class: versicolor Class: virginica
+Sensitivity 1.0000 1.0000 0.9000
+Specificity 1.0000 0.9500 1.0000
+Pos Pred Value 1.0000 0.9091 1.0000
+Neg Pred Value 1.0000 1.0000 0.9524
+Prevalence 0.3333 0.3333 0.3333
+Detection Rate 0.3333 0.3333 0.3000
+Detection Prevalence 0.3333 0.3667 0.3000
+Balanced Accuracy 1.0000 0.9750 0.9500
+
+B)
+library(caret)
+library(e1071)
+data(iris)
+set.seed(123)
+trainIndex <- createDataPartition(iris$Species, p = 0.8, list = FALSE)
+trainData <- iris[trainIndex, ]
+testData <- iris[-trainIndex, ]
+svm_model <- svm(Species ~ ., data = trainData, kernel = "linear") # Linear kernel
+svm_predictions <- predict(svm_model, testData)
+confusionMatrix(svm_predictions, testData$Species)
+OUTPUT:
+Confusion Matrix and Statistics
+Reference
+Prediction setosa versicolor virginica
+setosa 10 0 0
+versicolor 0 10 1
+virginica 0 0 9
+Overall Statistics
+Accuracy : 0.9667
+95% CI : (0.8278, 0.9992)
+No Information Rate : 0.3333
+P-Value [Acc > NIR] : 2.963e-13
+Kappa : 0.95
+Mcnemar's Test P-Value : NA
+Statistics by Class:
+Class: setosa Class: versicolor Class: virginica
+Sensitivity 1.0000 1.0000 0.9000
+Specificity 1.0000 0.9500 1.0000
+Pos Pred Value 1.0000 0.9091 1.0000
+Neg Pred Value 1.0000 1.0000 0.9524
+Prevalence 0.3333 0.3333 0.3333
+Detection Rate 0.3333 0.3333 0.3000
+Detection Prevalence 0.3333 0.3667 0.3000
+Balanced Accuracy 1.0000 0.9750 0.9500
