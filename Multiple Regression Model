@@ -1,0 +1,68 @@
+Week 9:
+Multiple Regression Model:
+a) Develop Multiple Regression model for any dataset.
+b) Apply Multiple Regression Model to predict the data on any dataset.
+.
+Program:
+A) library(MASS) # Contains Boston
+dataset library(caret) # For data partitioning
+library(ggplot2) # For visualization
+data("Boston")
+head(Boston)
+set.seed(123)
+trainIndex <- createDataPartition(Boston$medv, p = 0.8, list = FALSE)
+trainData <- Boston[trainIndex, ]
+testData <- Boston[-trainIndex, ]
+lm_model <- lm(medv ~ ., data = trainData)
+summary(lm_model)
+predictions <- predict(lm_model, newdata = testData)
+rmse <- sqrt(mean((predictions - testData$medv)^2))
+cat("RMSE: ", rmse)
+ggplot(data.frame(Actual = testData$medv, Predicted = predictions), aes(x = Actual, y = Predicted)) +
+geom_point(color = "blue") +
+geom_abline(slope = 1, intercept = 0, linetype = "dashed", color = "red") +
+labs(title = "Actual vs Predicted: Boston Housing Prices",
+x = "Actual Median Value of Homes ($1000s)",
+y = "Predicted Median Value of Homes ($1000s)")
+par(mfrow = c(2, 2))
+plot(lm_model)
+Output:
+crim zn indus chas nox rm age dis rad tax ptratio black lstat medv
+1 0.00632 18 2.31 0 0.538 6.575 65.2 4.0900 1 296 15.3 396.90 4.98 24.0
+2 0.02731 0 7.07 0 0.469 6.421 78.9 4.9671 2 242 17.8 396.90 9.14 21.6
+3 0.02729 0 7.07 0 0.469 7.185 61.1 4.9671 2 242 17.8 392.83 4.03 34.7
+4 0.03237 0 2.18 0 0.458 6.998 45.8 6.0622 3 222 18.7 394.63 2.94 33.4
+5 0.06905 0 2.18 0 0.458 7.147 54.2 6.0622 3 222 18.7 396.90 5.33 36.2
+6 0.02985 0 2.18 0 0.458 6.430 58.7 6.0622 3 222 18.7 394.12 5.21 28.7
+RMSE: 4.588948
+(IMAGE)
+
+B) install.packages("caret")
+install.packages("ggplot2")
+library(caret)
+library(ggplot2)
+data("mtcars")
+head(mtcars)
+set.seed(123)
+trainIndex <- createDataPartition(mtcars$mpg, p = 0.8, list = FALSE)
+trainData <- mtcars[trainIndex, ]
+testData <- mtcars[-trainIndex, ]
+cat("Dimensions of trainData:", dim(trainData), "\n")
+cat("Dimensions of testData:", dim(testData), "\n")
+lm_model_mtcars <- lm(mpg ~ cyl + disp + hp + wt + qsec + drat + vs + am + gear + carb, data = trainData)
+summary(lm_model_mtcars)
+predictions_mtcars <- predict(lm_model_mtcars, newdata = testData)
+cat("Length of predictions:", length(predictions_mtcars), "\n")
+cat("Length of testData$mpg:", length(testData$mpg), "\n")
+rmse_mtcars <- sqrt(mean((predictions_mtcars - testData$mpg)^2))
+cat("RMSE: ", rmse_mtcars, "\n")
+comparison_data <- data.frame(Actual = testData$mpg, Predicted = predictions_mtcars)
+OUTPUT:
+mpg cyl disp hp drat wt qsec vs am gear carb
+Mazda RX4 21.0 6 160 110 3.90 2.620 16.46 0 1 4 4
+Mazda RX4 Wag 21.0 6 160 110 3.90 2.875 17.02 0 1 4 4
+Datsun 710 22.8 4 108 93 3.85 2.320 18.61 1 1 4 1
+Hornet 4 Drive 21.4 6 258 110 3.08 3.215 19.44 1 0 3 1
+Hornet Sportabout 18.7 8 360 175 3.15 3.440 17.02 0 0 3 2
+Valiant 18.1 6 225 105 2.76 3.460 20.22 1 0 3 1
+RMSE: 4.808981>
